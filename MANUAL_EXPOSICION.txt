@@ -1,0 +1,88 @@
+GUION BREVE PARA EXPONER
+========================
+
+Duración sugerida: 8 a 10 minutos.
+
+DIAPOSITIVA 1 - PORTADA
+Presentar el tema: predicción de duración y severidad de interrupciones eléctricas con información pública.
+
+DIAPOSITIVA 2 - PROBLEMA Y OBJETIVO
+Al inicio de una interrupción la información es incompleta. El proyecto estima una referencia temprana, pero no reemplaza al operador.
+
+DIAPOSITIVA 3 - DATOS
+La fuente es el servicio ArcGIS REST de Osinergmin. Se integran 492 interrupciones de 2019 con 155 puntos de entrega y se construyen 13 variables de entrada.
+
+DIAPOSITIVA 4 - PIPELINE
+Explicar las cinco etapas: ingesta, calidad, variables, modelos y servicio. La fase 3 repite el flujo para actualizar el modelo.
+
+DIAPOSITIVA 5 - PREPARACIÓN
+La duración es fin menos inicio. La hora final solo crea la respuesta real y nunca entra al modelo. La división temporal usa 393 eventos para entrenamiento y 99 para prueba.
+
+DIAPOSITIVA 6 - DISTRIBUCIÓN
+La mediana es 49.2 minutos y la media 165.8. La diferencia muestra una cola extensa causada por eventos largos.
+
+DIAPOSITIVA 7 - MODELO DE DURACIÓN
+Se compararon baseline, Ridge y Random Forest, con y sin transformación logarítmica. Ridge obtuvo el menor MAE: 115 minutos frente a 176.8 del baseline.
+
+DIAPOSITIVA 8 - ALCANCE DEL AJUSTE
+El R2 es 0.262. El modelo mejora el baseline, pero conserva errores grandes en eventos extremos. Su uso es académico y analítico.
+
+DIAPOSITIVA 9 - SEVERIDAD
+La severidad es académica: baja hasta 52 minutos, media hasta 373.7 y alta por encima. Random Forest obtuvo 72.7 % de exactitud y F1 macro de 0.551.
+
+DIAPOSITIVA 10 - VARIABLES
+Las importancias muestran qué señales utilizó el modelo, pero no demuestran causalidad. La muestra pequeña limita la estabilidad.
+
+DIAPOSITIVA 11 - ARQUITECTURA
+Los datos generan CSV, modelos PKL y métricas. FastAPI publica la predicción en el puerto 8000 y Streamlit presenta el dashboard en el 8501. Docker puede levantar ambos.
+
+DIAPOSITIVA 12 - CIERRE Y DEMOSTRACIÓN
+El proyecto entrega un flujo reproducible con datos, modelos, API, dashboard y reentrenamiento. La principal limitación es que la fuente pública no contiene todas las variables operativas.
+
+DEMOSTRACIÓN EN VIVO
+====================
+
+1. Ejecutar run_dashboard.bat.
+2. Abrir http://localhost:8501.
+3. Completar un evento y pulsar Estimar interrupción.
+4. Explicar duración, severidad y probabilidades.
+5. Mostrar las pestañas Datos y Modelos.
+6. Opcional: ejecutar run_api.bat y abrir http://localhost:8000/docs.
+
+PREGUNTAS PROBABLES
+===================
+
+¿El modelo conoce la hora de reposición?
+No. La hora final solo calcula la duración real durante el entrenamiento.
+
+¿Por qué no se usa una división aleatoria?
+La prueba temporal simula eventos futuros y evita mezclar futuro con pasado.
+
+¿La severidad es regulatoria?
+No. Es una clasificación académica basada en percentiles de duración.
+
+¿Por qué Ridge si Random Forest tiene mejor R2?
+El criterio principal fue MAE. Ridge obtuvo el menor error absoluto promedio, que se interpreta directamente en minutos.
+
+¿Puede usarse en un centro de control?
+No todavía. Antes requiere más años de datos, validación técnica y variables de carga, topología, protecciones, maniobras y clima.
+
+¿Siempre una interrupción implica clientes afectados?
+No necesariamente. La fuente describe eventos y puntos de entrega, pero no contiene de forma consistente el número de usuarios ni la potencia afectada.
+
+¿Cómo se actualiza?
+run_fase3.bat vuelve a consultar la fuente, procesa los datos, reentrena y registra la nueva versión y el MAE.
+
+ORDEN DE EJECUCIÓN
+==================
+
+Primera vez:
+1. setup.bat
+2. run_fase1.bat
+3. run_fase2.bat
+4. run_dashboard.bat
+5. run_api.bat, si se desea mostrar Swagger
+
+Proyecto ya preparado:
+1. run_dashboard.bat
+2. run_api.bat, opcional

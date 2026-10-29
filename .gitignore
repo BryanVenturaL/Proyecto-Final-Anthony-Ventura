@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.streamlit/
+node_modules/
+.build_presentation/
+.build_docx_render/
+.codex-finalizer/
+.chart-data-*/
+tools/
+*.log
+.DS_Store
+

@@ -1,0 +1,41 @@
+{
+  "version": "20261011181957",
+  "fecha_entrenamiento_utc": "2026-10-11T18:19:57.623088+00:00",
+  "fuente": "https://gisem.osinergmin.gob.pe/serverosih/rest/services/Electricidad/MapaSEIN_Calidad/MapServer",
+  "registros": 492,
+  "entrenamiento": 393,
+  "prueba": 99,
+  "modelo_duracion": "Ridge",
+  "modelo_severidad": "Random Forest",
+  "metricas_duracion": {
+    "modelo": "Ridge",
+    "MAE": 114.95718712411278,
+    "RMSE": 238.4606433681355,
+    "R2": 0.261813127481076
+  },
+  "metricas_severidad": {
+    "modelo": "Random Forest",
+    "F1_macro": 0.5508684863523573,
+    "exactitud": 0.7272727272727273,
+    "exactitud_balanceada": 0.5746352413019079
+  },
+  "umbrales_severidad_min": {
+    "baja_hasta": 52.0,
+    "media_hasta": 373.70000000000005
+  },
+  "variables": [
+    "tipo_interrupcion",
+    "causa_interrupcion",
+    "cliente",
+    "suministrador",
+    "propietario",
+    "nivel_tension",
+    "tension_nominal_kv",
+    "hora",
+    "dia_semana",
+    "mes",
+    "es_fin_semana",
+    "es_noche",
+    "cantidad_suministradores"
+  ]
+}
